@@ -46,6 +46,18 @@ async function run() {
       res.send(jobs);
     });
 
+    // my toys
+    app.get("/my-toys/:email", async (req, res) => {
+      console.log(req.params.id);
+      const jobs = await toysCollection
+        .find({
+          Email: req.params.email,
+        })
+        .toArray();
+      res.send(jobs);
+    });
+
+    // post data
     app.post("/post-toy", async (req, res) => {
       const body = req.body;
       console.log(body);
