@@ -30,6 +30,22 @@ async function run() {
     await client.connect();
     const toysCollection = client.db("toyMarket").collection("allToys");
 
+    // allToys
+    app.get("/all-toys", async (req, res) => {
+      const jobs = await toysCollection.find({}).toArray();
+      res.send(jobs);
+    });
+    // category by toys
+    app.get("/all-toys/:category", async (req, res) => {
+      console.log(req.params.id);
+      const jobs = await toysCollection
+        .find({
+          category: req.params.category,
+        })
+        .toArray();
+      res.send(jobs);
+    });
+
     app.post("/post-toy", async (req, res) => {
       const body = req.body;
       console.log(body);
