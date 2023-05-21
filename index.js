@@ -102,12 +102,15 @@ async function run() {
       const filter = { _id: new ObjectId(id) };
       const result = await toysCollection.findOne(filter);
       res.send(result);
-      // const jobs = await toysCollection
-      //   .find({
-      //     Email: req.params.email,
-      //   })
-      //   .toArray();
-      // res.send(jobs);
+    });
+
+    // delete section
+    app.delete("/toy-delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+
+      const result = await toysCollection.deleteOne(filter);
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
