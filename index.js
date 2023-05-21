@@ -77,6 +77,7 @@ async function run() {
       const id = req.params.id;
       const body = req.body;
       const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
       const updateDoc = {
         $set: {
           Name: body.Name,
@@ -85,7 +86,7 @@ async function run() {
           ratting: body.ratting,
         },
       };
-      const result = await toysCollection.updateOne(filter, updateDoc);
+      const result = await toysCollection.updateOne(filter, updateDoc, options);
       res.send(result);
     });
 
