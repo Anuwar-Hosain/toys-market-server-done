@@ -23,7 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    client.connect();
     const toysCollection = client.db("toyMarket").collection("allToys");
 
     const indexKeys = { Name: 1 }; // Replace field1 and field2 with your actual field names
