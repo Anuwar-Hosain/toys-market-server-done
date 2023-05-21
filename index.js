@@ -9,10 +9,6 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// toysMarketUsers
-// JRqSIcJstA5OADgT
-console.log(process.env.PASS);
-
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.oattrlg.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
