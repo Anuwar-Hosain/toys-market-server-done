@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
 const cors = require("cors");
@@ -62,9 +62,10 @@ async function run() {
     // my toys search
     app.get("/my-toys-get/:text", async (req, res) => {
       const text = req.params.text;
+      console.log(text);
       const result = await toysCollection
         .find({
-          title: { $regex: text, $options: "i" },
+          Name: { $regex: text, $options: "i" },
         })
         .toArray();
       res.send(result);
@@ -75,6 +76,38 @@ async function run() {
       const body = req.body;
       const result = await toysCollection.insertOne(body);
       res.send(result);
+    });
+    //toy update
+    app.put("/updateToy/:id", async (req, res) => {
+      const id = req.params.id;
+      const body = req.body;
+      console.log(body, id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          Name: body.Name,
+          price: body.price,
+          quantity: body.quantity,
+          ratting: body.ratting,
+        },
+      };
+      const result = await toysCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
+    // view details
+    app.get("/view-detailsToy/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(req.params.id);
+      const filter = { _id: new ObjectId(id) };
+      const result = await toysCollection.findOne(filter);
+      res.send(result);
+      // const jobs = await toysCollection
+      //   .find({
+      //     Email: req.params.email,
+      //   })
+      //   .toArray();
+      // res.send(jobs);
     });
 
     // Send a ping to confirm a successful connection
