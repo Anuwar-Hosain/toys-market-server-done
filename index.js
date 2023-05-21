@@ -27,13 +27,13 @@ async function run() {
     // await client.connect();
     const toysCollection = client.db("toyMarket").collection("allToys");
 
-    const indexKeys = { Name: 1 }; // Replace field1 and field2 with your actual field names
-    const indexOptions = { name: "title" }; // Replace index_name with the desired index name
-    const result = await toysCollection.createIndex(indexKeys, indexOptions);
+    // const indexKeys = { Name: 1 }; // Replace field1 and field2 with your actual field names
+    // const indexOptions = { name: "title" }; // Replace index_name with the desired index name
+    // const result = await toysCollection.createIndex(indexKeys, indexOptions);
 
     // allToys
     app.get("/all-toys", async (req, res) => {
-      const jobs = await toysCollection.find({}).toArray();
+      const jobs = await toysCollection.find({}).limit(20).toArray();
       res.send(jobs);
     });
     // category by toys
