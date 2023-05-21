@@ -6,7 +6,13 @@ const cors = require("cors");
 const port = process.env.PORT || 5000;
 
 // middleware
-app.use(cors());
+const corsConfig = {
+  origin: "",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+};
+app.use(cors(corsConfig));
+app.options("", cors(corsConfig));
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.oattrlg.mongodb.net/?retryWrites=true&w=majority`;
@@ -23,7 +29,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    client.connect();
+    // await client.connect();
     const toysCollection = client.db("toyMarket").collection("allToys");
 
     const indexKeys = { Name: 1 }; // Replace field1 and field2 with your actual field names
@@ -47,7 +53,6 @@ async function run() {
 
     // my toys
     app.get("/my-toys/:email", async (req, res) => {
-      console.log(req.params.id);
       const jobs = await toysCollection
         .find({
           Email: req.params.email,
@@ -58,7 +63,6 @@ async function run() {
     // my toys search
     app.get("/my-toys-get/:text", async (req, res) => {
       const text = req.params.text;
-      console.log(text);
       const result = await toysCollection
         .find({
           Name: { $regex: text, $options: "i" },
@@ -77,7 +81,6 @@ async function run() {
     app.put("/updateToy/:id", async (req, res) => {
       const id = req.params.id;
       const body = req.body;
-      console.log(body, id);
       const filter = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: {
@@ -94,7 +97,6 @@ async function run() {
     // view details
     app.get("/view-detailsToy/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(req.params.id);
       const filter = { _id: new ObjectId(id) };
       const result = await toysCollection.findOne(filter);
       res.send(result);
